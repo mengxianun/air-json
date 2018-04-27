@@ -23,7 +23,7 @@ public class JSONObject {
 	 * map初始化为LinkedHashMap类型, 保证元素的顺序
 	 */
 	public JSONObject() {
-		this.map = new LinkedHashMap<String, Object>();
+		this.map = new LinkedHashMap<>();
 	}
 
 	/**
