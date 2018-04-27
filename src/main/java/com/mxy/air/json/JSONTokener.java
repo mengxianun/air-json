@@ -1,3 +1,5 @@
+package com.mxy.air.json;
+
 /**
  * 将json字符串解析为相应对象
  * 遵循标准的json语法. 除此之外, 还支持以下语法

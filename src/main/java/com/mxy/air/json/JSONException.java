@@ -1,3 +1,5 @@
+package com.mxy.air.json;
+
 /**
  * JSON相关的异常
  * 

@@ -1,3 +1,5 @@
+package com.mxy.air.json;
+
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Collection;

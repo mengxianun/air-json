@@ -1,3 +1,5 @@
+package com.mxy.air.json;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -149,7 +151,7 @@ public class JSONObject {
 			} else if (value.equalsIgnoreCase("false")) {
 				return false;
 			} else {
-				throw new JSONException("JSONObject [\"" + key + "\"] 不是布尔类型");
+				throw new JSONException("com.mxy.air.json.JSONObject [\"" + key + "\"] 不是布尔类型");
 			}
 		}
 	}
@@ -180,7 +182,7 @@ public class JSONObject {
 		try {
 			return (JSONObject) object;
 		} catch (Exception e) {
-			throw new JSONException("JSONObject [\"" + key + "\"] 不是JSONObject类型");
+			throw new JSONException("com.mxy.air.json.JSONObject [\"" + key + "\"] 不是JSONObject类型");
 		}
 	}
 
@@ -195,7 +197,7 @@ public class JSONObject {
 		try {
 			return (JSONArray) object;
 		} catch (Exception e) {
-			throw new JSONException("JSONObject [\"" + key + "\"] 不是JSONArray类型");
+			throw new JSONException("com.mxy.air.json.JSONObject [\"" + key + "\"] 不是JSONArray类型");
 		}
 	}
 

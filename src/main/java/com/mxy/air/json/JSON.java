@@ -1,3 +1,5 @@
+package com.mxy.air.json;
+
 public class JSON {
 
 	public static boolean isEmpty(String json) {
