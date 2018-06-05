@@ -354,9 +354,6 @@ public class JSONObject {
 			return new JSONArray(collection);
 		} else if (object.getClass().isArray()) {
 			return new JSONArray(object);
-		} else if (object.getClass().getPackage().getName().startsWith("java.")
-				|| object.getClass().getPackage().getName().startsWith("javax.")) {
-			return object.toString();
 		}
 		return object;
 	}
