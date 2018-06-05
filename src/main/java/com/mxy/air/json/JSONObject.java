@@ -301,7 +301,7 @@ public class JSONObject {
 	 * @param another
 	 * @return
 	 */
-	public JSONObject copy(JSONObject another) {
+	public JSONObject merge(JSONObject another) {
 		if (another == null) {
 			return this;
 		}
