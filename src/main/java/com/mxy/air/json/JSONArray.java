@@ -105,6 +105,10 @@ public class JSONArray {
 		return this;
 	}
 
+	public boolean contains(Object o) {
+		return this.list.contains(o);
+	}
+
 	/**
 	 * JSON数组长度
 	 * 

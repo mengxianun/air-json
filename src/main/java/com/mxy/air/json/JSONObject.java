@@ -296,7 +296,7 @@ public class JSONObject {
 	}
 
 	/**
-	 * 将另一个JSONObject的同名属性值覆盖到当前JSONObject对象中
+	 * 将另一个JSONObject的属性值覆盖到当前JSONObject对象中, 只覆盖第一级属性
 	 * 
 	 * @param another
 	 * @return
@@ -306,9 +306,44 @@ public class JSONObject {
 			return this;
 		}
 		for (Entry<String, Object> entry : another.entrySet()) {
+			put(entry.getKey(), entry.getValue());
+		}
+		return this;
+	}
+
+	/**
+	 * 将另一个JSONObject的属性值覆盖到当前JSONObject对象中
+	 * 在有多级嵌套属性的情况下
+	 *   如果属性值是JSONObject类型, 则会递归merge
+	 *   如果属性值是JSONArray类型, 怎会进行数组合并, 这里只进行基本类型的合并
+	 *   其他类型属性值会直接进行覆盖
+	 * 
+	 * @param another
+	 * @return
+	 */
+	public JSONObject deepMerge(JSONObject another) {
+		if (another == null) {
+			return this;
+		}
+		for (Entry<String, Object> entry : another.entrySet()) {
 			String key = entry.getKey();
 			Object value = entry.getValue();
 			if (containsKey(key)) {
+				Object originValue = get(key);
+				if (originValue instanceof JSONObject && value instanceof JSONObject) {
+					JSONObject newValue = ((JSONObject) originValue).merge((JSONObject) value);
+					put(key, newValue);
+				} else if (originValue instanceof JSONArray && value instanceof JSONArray) {
+					JSONArray originValueArray = ((JSONArray) originValue);
+					for (Object valueEle : ((JSONArray) value).list()) {
+						if (!originValueArray.contains(valueEle)) {
+							originValueArray.add(valueEle);
+						}
+					}
+				} else {
+					put(key, value);
+				}
+			} else {
 				put(key, value);
 			}
 		}
