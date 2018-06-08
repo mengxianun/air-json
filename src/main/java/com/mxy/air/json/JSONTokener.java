@@ -168,6 +168,7 @@ public class JSONTokener {
 					sb.append(c);
 					break;
 				}
+				break;
 
 			default:
 				if (c == quote) {
