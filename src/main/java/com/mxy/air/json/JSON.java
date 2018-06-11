@@ -79,7 +79,7 @@ public class JSON {
 	 * @throws IOException
 	 * @throws URISyntaxException
 	 */
-	private static Path getPath(String jsonFile) throws IOException, URISyntaxException {
+	public static Path getPath(String jsonFile) throws IOException, URISyntaxException {
 		if (jsonFile == null) {
 			return null;
 		}
