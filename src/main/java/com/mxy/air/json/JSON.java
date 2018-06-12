@@ -30,6 +30,18 @@ public class JSON {
 	}
 
 	/**
+	 * 读取JSON文件, 返回文件内容字符串
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+	public static String read(Path path) throws IOException, URISyntaxException {
+		if (path == null) return null;
+		return new String(Files.readAllBytes(path), Charset.defaultCharset());
+	}
+
+	/**
 	 * 从JSON文件中读取JSON对象
 	 * @param jsonFile
 	 * @return
@@ -41,8 +53,39 @@ public class JSON {
 		return json == null ? null : new JSONObject(json);
 	}
 
+	/**
+	 * 从JSON文件中读取JSON对象
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+	public static JSONObject readObject(Path path) throws IOException, URISyntaxException {
+		String json = read(path);
+		return json == null ? null : new JSONObject(json);
+	}
+
+	/**
+	 * 从JSON文件中读取JSON数组
+	 * @param jsonFile
+	 * @return
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
 	public static JSONArray readArray(String jsonFile) throws IOException, URISyntaxException {
 		String json = read(jsonFile);
+		return json == null ? null : new JSONArray(json);
+	}
+
+	/**
+	 * 从JSON文件中读取JSON数组
+	 * @param path
+	 * @return
+	 * @throws IOException
+	 * @throws URISyntaxException
+	 */
+	public static JSONArray readArray(Path path) throws IOException, URISyntaxException {
+		String json = read(path);
 		return json == null ? null : new JSONArray(json);
 	}
 
