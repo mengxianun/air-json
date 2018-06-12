@@ -140,9 +140,9 @@ public class JSONObject {
 	 * @param key
 	 * @return
 	 */
-	public Object getFirst() {
+	public Entry<String, Object> getFirst() {
 		if (size() == 0) return null;
-		return this.map.entrySet().iterator().next().getValue();
+		return this.map.entrySet().iterator().next();
 	}
 
 	/**
