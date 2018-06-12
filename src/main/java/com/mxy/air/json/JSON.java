@@ -24,9 +24,7 @@ public class JSON {
 	 * @throws URISyntaxException
 	 */
 	public static String read(String jsonFile) throws IOException, URISyntaxException {
-		Path path = getPath(jsonFile);
-		if (path == null) return null;
-		return new String(Files.readAllBytes(path), Charset.defaultCharset());
+		return read(getPath(jsonFile));
 	}
 
 	/**
@@ -50,7 +48,7 @@ public class JSON {
 	 */
 	public static JSONObject readObject(String jsonFile) throws IOException, URISyntaxException {
 		String json = read(jsonFile);
-		return json == null ? null : new JSONObject(json);
+		return (json == null || json.isEmpty()) ? null : new JSONObject(json);
 	}
 
 	/**
@@ -62,7 +60,7 @@ public class JSON {
 	 */
 	public static JSONObject readObject(Path path) throws IOException, URISyntaxException {
 		String json = read(path);
-		return json == null ? null : new JSONObject(json);
+		return (json == null || json.isEmpty()) ? null : new JSONObject(json);
 	}
 
 	/**
@@ -74,7 +72,7 @@ public class JSON {
 	 */
 	public static JSONArray readArray(String jsonFile) throws IOException, URISyntaxException {
 		String json = read(jsonFile);
-		return json == null ? null : new JSONArray(json);
+		return (json == null || json.isEmpty()) ? null : new JSONArray(json);
 	}
 
 	/**
@@ -86,7 +84,7 @@ public class JSON {
 	 */
 	public static JSONArray readArray(Path path) throws IOException, URISyntaxException {
 		String json = read(path);
-		return json == null ? null : new JSONArray(json);
+		return (json == null || json.isEmpty()) ? null : new JSONArray(json);
 	}
 
 	/**
