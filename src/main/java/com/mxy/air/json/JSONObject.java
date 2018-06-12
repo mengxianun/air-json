@@ -126,6 +126,26 @@ public class JSONObject {
 	}
 
 	/**
+	 * 判断key是否存在
+	 * 
+	 * @param key
+	 * @return
+	 */
+	public boolean containsKey(String key) {
+		return this.map.containsKey(key);
+	}
+
+	/**
+	 * 获取JSON对象的第一个元素
+	 * @param key
+	 * @return
+	 */
+	public Object getFirst(String key) {
+		if (size() == 0) return null;
+		return this.map.entrySet().iterator().next();
+	}
+
+	/**
 	 * 返回指定key的value
 	 * 
 	 * @param key
@@ -201,22 +221,18 @@ public class JSONObject {
 		}
 	}
 
-	/**
-	 * 判断key是否存在
-	 * 
-	 * @param key
-	 * @return
+	/*
+	 * 添加对枚举类型的基本方法, key为枚举名称对应的小写字符串
 	 */
-	public boolean containsKey(String key) {
-		return this.map.containsKey(key);
+
+	public boolean containsKey(Enum<?> e) {
+		return containsKey(e.toString().toLowerCase());
 	}
 
-	/**
-	 * 添加对枚举类型的基本方法, key为枚举名称对应的小写字符串
-	 * 
-	 * @param e
-	 * @return
-	 */
+	public Object getFirst(Enum<?> e) {
+		return getFirst(e.toString().toLowerCase());
+	}
+
 	public Object get(Enum<?> e) {
 		return get(e.toString().toLowerCase());
 	}
@@ -247,10 +263,6 @@ public class JSONObject {
 
 	public JSONArray getArray(Enum<?> e) {
 		return getArray(e.toString().toLowerCase());
-	}
-
-	public boolean containsKey(Enum<?> e) {
-		return containsKey(e.toString().toLowerCase());
 	}
 
 	/**
