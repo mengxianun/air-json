@@ -140,9 +140,9 @@ public class JSONObject {
 	 * @param key
 	 * @return
 	 */
-	public Object getFirst(String key) {
+	public Object getFirst() {
 		if (size() == 0) return null;
-		return this.map.entrySet().iterator().next();
+		return this.map.entrySet().iterator().next().getValue();
 	}
 
 	/**
@@ -227,10 +227,6 @@ public class JSONObject {
 
 	public boolean containsKey(Enum<?> e) {
 		return containsKey(e.toString().toLowerCase());
-	}
-
-	public Object getFirst(Enum<?> e) {
-		return getFirst(e.toString().toLowerCase());
 	}
 
 	public Object get(Enum<?> e) {
