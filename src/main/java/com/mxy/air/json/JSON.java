@@ -121,6 +121,7 @@ public class JSON {
 	 * @throws URISyntaxException
 	 */
 	public static Path getPath(String jsonFile) throws IOException, URISyntaxException {
+		System.out.println("jsonFile:" + jsonFile);
 		if (jsonFile == null) {
 			return null;
 		}
@@ -129,29 +130,36 @@ public class JSON {
 		if (file.isAbsolute()) { // 绝对路径
 			path = Paths.get(jsonFile);
 		} else {
-			URL url = JSON.class.getClassLoader().getResource(jsonFile);
-			if (url == null) {
-				return null;
-			}
-			URI uri = url.toURI();
-			String pathString = uri.toString();
+			URI runtimeUri = JSON.class.getProtectionDomain().getCodeSource().getLocation().toURI();
+			String runtimePathString = runtimeUri.toString();
 			// jar:file:/D:/test/datacolor/v2/datacolor-1.0.0.jar!/BOOT-INF/classes!/datacolor.json
-			if (pathString.startsWith("jar:file:/") && pathString.indexOf("jar!") != -1) { // jar
-				String tempPathString = pathString.substring(10).split("jar!")[0];
+			if (runtimePathString.startsWith("jar:file:/") && runtimePathString.indexOf("jar!") != -1) { // jar
+				String tempPathString = runtimePathString.substring(10).split("jar!")[0];
 				String jarDir = tempPathString.substring(0, tempPathString.lastIndexOf("/"));
 				String jsonFilePathString = jarDir + "/" + jsonFile;
+				System.out.println("jsonFilePathString:" + jsonFilePathString);
 				if (new File(jsonFilePathString).exists()) { // 在jar包所在文件夹下存在
 					path = Paths.get(jsonFile);
 				} else { // 否则读取jar包内部文件
+					URL url = JSON.class.getClassLoader().getResource(jsonFile);
+					if (url == null) {
+						return null;
+					}
 					String[] pathArray = url.toString().split("!", 2);
 					try (FileSystem fileSystem = FileSystems.newFileSystem(URI.create(pathArray[0]), new HashMap<>())) {
 						path = fileSystem.getPath(pathArray[1].replaceAll("!", ""));
 					}
 				}
 			} else {
+				URL url = JSON.class.getClassLoader().getResource(jsonFile);
+				if (url == null) {
+					return null;
+				}
+				URI uri = url.toURI();
 				path = Paths.get(uri);
 			}
 		}
+		System.out.println("path:" + path);
 		return path;
 	}
 
