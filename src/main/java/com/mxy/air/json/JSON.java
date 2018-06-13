@@ -121,7 +121,6 @@ public class JSON {
 	 * @throws URISyntaxException
 	 */
 	public static Path getPath(String jsonFile) throws IOException, URISyntaxException {
-		System.out.println("jsonFile:" + jsonFile);
 		if (jsonFile == null) {
 			return null;
 		}
@@ -137,7 +136,6 @@ public class JSON {
 				String tempPathString = runtimePathString.substring(10).split("jar!")[0];
 				String jarDir = tempPathString.substring(0, tempPathString.lastIndexOf("/"));
 				String jsonFilePathString = jarDir + "/" + jsonFile;
-				System.out.println("jsonFilePathString:" + jsonFilePathString);
 				if (new File(jsonFilePathString).exists()) { // 在jar包所在文件夹下存在
 					path = Paths.get(jsonFile);
 				} else { // 否则读取jar包内部文件
@@ -159,7 +157,6 @@ public class JSON {
 				path = Paths.get(uri);
 			}
 		}
-		System.out.println("path:" + path);
 		return path;
 	}
 
