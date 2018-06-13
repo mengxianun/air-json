@@ -36,7 +36,7 @@ public class JSON {
 	 */
 	public static String read(Path path) throws IOException, URISyntaxException {
 		if (path == null) return null;
-		return new String(Files.readAllBytes(path), Charset.defaultCharset());
+		return new String(Files.readAllBytes(path), Charset.forName("UTF-8"));
 	}
 
 	/**
@@ -102,7 +102,7 @@ public class JSON {
 		try (Stream<Path> stream = Files.list(path)) {
 			stream.filter(Files::isRegularFile).forEach(subFile -> {
 				try {
-					String subFileString = new String(Files.readAllBytes(subFile), Charset.defaultCharset());
+					String subFileString = new String(Files.readAllBytes(subFile), Charset.forName("UTF-8"));
 					if (subFileString.isEmpty()) return;
 					jsonArray.add(toJSON(subFileString));
 				} catch (IOException e) {
@@ -134,10 +134,19 @@ public class JSON {
 				return null;
 			}
 			URI uri = url.toURI();
-			if (uri.toString().startsWith("jar:file:/") && uri.toString().indexOf("jar!") != -1) { // jar
-				String[] pathArray = url.toString().split("!", 2);
-				try (FileSystem fileSystem = FileSystems.newFileSystem(URI.create(pathArray[0]), new HashMap<>())) {
-					path = fileSystem.getPath(pathArray[1].replaceAll("!", ""));
+			String pathString = uri.toString();
+			// jar:file:/D:/test/datacolor/v2/datacolor-1.0.0.jar!/BOOT-INF/classes!/datacolor.json
+			if (pathString.startsWith("jar:file:/") && pathString.indexOf("jar!") != -1) { // jar
+				String tempPathString = pathString.substring(10).split("jar!")[0];
+				String jarDir = tempPathString.substring(0, tempPathString.lastIndexOf("/"));
+				String jsonFilePathString = jarDir + "/" + jsonFile;
+				if (new File(jsonFilePathString).exists()) { // 在jar包所在文件夹下存在
+					path = Paths.get(jsonFile);
+				} else { // 否则读取jar包内部文件
+					String[] pathArray = url.toString().split("!", 2);
+					try (FileSystem fileSystem = FileSystems.newFileSystem(URI.create(pathArray[0]), new HashMap<>())) {
+						path = fileSystem.getPath(pathArray[1].replaceAll("!", ""));
+					}
 				}
 			} else {
 				path = Paths.get(uri);
