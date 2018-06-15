@@ -6,12 +6,9 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.Charset;
-import java.nio.file.FileSystem;
-import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
 import java.util.stream.Stream;
 
 public class JSON {
@@ -133,20 +130,30 @@ public class JSON {
 			String runtimePathString = runtimeUri.toString();
 			// jar:file:/D:/test/datacolor/v2/datacolor-1.0.0.jar!/BOOT-INF/classes!/datacolor.json
 			if (runtimePathString.startsWith("jar:file:/") && runtimePathString.indexOf("jar!") != -1) { // jar
-				String tempPathString = runtimePathString.substring(10).split("jar!")[0];
+				String tempPathString = null;
+				String os = System.getProperty("os.name");
+				if (os.startsWith("Windows")) {
+					tempPathString = runtimePathString.substring(10).split("jar!")[0];
+				} else if (os.startsWith("Linux")) {
+					tempPathString = runtimePathString.substring(9).split("jar!")[0];
+				} else {
+					tempPathString = runtimePathString.substring(9).split("jar!")[0];
+				}
 				String jarDir = tempPathString.substring(0, tempPathString.lastIndexOf("/"));
 				String jsonFilePathString = jarDir + "/" + jsonFile;
 				if (new File(jsonFilePathString).exists()) { // 在jar包所在文件夹下存在
-					path = Paths.get(jsonFile);
+					path = Paths.get(jsonFilePathString);
 				} else { // 否则读取jar包内部文件
 					URL url = JSON.class.getClassLoader().getResource(jsonFile);
 					if (url == null) {
 						return null;
 					}
 					String[] pathArray = url.toString().split("!", 2);
-					try (FileSystem fileSystem = FileSystems.newFileSystem(URI.create(pathArray[0]), new HashMap<>())) {
-						path = fileSystem.getPath(pathArray[1].replaceAll("!", ""));
+					URL resourceInJarClassPath = JSON.class.getClassLoader().getResource(pathArray[1]);
+					if (resourceInJarClassPath == null) {
+						return null;
 					}
+					path = Paths.get(resourceInJarClassPath.toURI());
 				}
 			} else {
 				URL url = JSON.class.getClassLoader().getResource(jsonFile);
