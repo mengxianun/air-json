@@ -430,7 +430,7 @@ public class JSONObject {
 	}
 	
 	/**
-	 * 将JSONObject转换成指定类型, 通过setter方法将json对象的属性设置到实例对象中的属性中
+	 * 将JSONObject转换成指定类型, 通过setter方法将JSON对象的属性设置到实例对象中的属性中
 	 * @param object
 	 * @param clazz
 	 * @return
@@ -440,13 +440,19 @@ public class JSONObject {
 		try {
 			t = clazz.newInstance();
 			
+			Map<String, Method> methods = new HashMap<>();
+			for (Method method : clazz.getMethods()) {
+				methods.put(method.getName(), method);
+			}
+
 			for (Entry<String, Object> entry : entrySet()) {
 				String name = entry.getKey();
 				Object value = entry.getValue();
 				String methodName = "set" + name.substring(0, 1).toUpperCase() + name.substring(1);
-				Method method = clazz.getMethod(methodName, value.getClass());
-				method.setAccessible(true);
-				method.invoke(t, value);
+				Method method = methods.get(methodName);
+				Method beanMethod = method.getDeclaringClass().getMethod(methodName, method.getParameterTypes());
+				beanMethod.setAccessible(true);
+				beanMethod.invoke(t, value);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
