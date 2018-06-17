@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'maven-publish'
 }
+compileJava.options.encoding = 'UTF-8'
 
 task sourceJar(type: Jar) {
   from sourceSets.main.allJava
