@@ -99,6 +99,16 @@ public class JSONObject {
 	}
 
 	/**
+	 * 通过一个key-value对构建JSONObject对象
+	 * @param key
+	 * @param value
+	 */
+	public JSONObject(String key, Object value) {
+		this();
+		map.put(key, value);
+	}
+
+	/**
 	 * 返回JSON对象元素集合
 	 * 
 	 * @return
