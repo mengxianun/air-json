@@ -109,6 +109,14 @@ public class JSONArray {
 		return this.list.contains(o);
 	}
 
+	public Object remove(int index) {
+		return this.list.remove(index);
+	}
+
+	public boolean remove(Object o) {
+		return this.list.remove(o);
+	}
+
 	/**
 	 * JSON数组长度
 	 * 
