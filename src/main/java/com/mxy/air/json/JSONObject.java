@@ -127,6 +127,14 @@ public class JSONObject {
 	}
 
 	/**
+	 * 返回JSON对象顶级Value的集合
+	 * @return
+	 */
+	public Collection<Object> values() {
+		return this.map.values();
+	}
+
+	/**
 	 * JSON对象长度
 	 * 
 	 * @return
