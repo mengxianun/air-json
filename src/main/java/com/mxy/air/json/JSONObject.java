@@ -8,7 +8,6 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Set;
 
 /**
@@ -17,7 +16,7 @@ import java.util.Set;
  * @author mengxiangyun
  *
  */
-public class JSONObject {
+public class JSONObject extends JSON implements Map<String, Object> {
 
 	private final Map<String, Object> map;
 
@@ -109,51 +108,6 @@ public class JSONObject {
 	}
 
 	/**
-	 * 返回JSON对象元素集合
-	 * 
-	 * @return
-	 */
-	public Set<Entry<String, Object>> entrySet() {
-		return this.map.entrySet();
-	}
-
-	/**
-	 * 返回JSON对象顶级Key的集合
-	 * 
-	 * @return
-	 */
-	public Set<String> keySet() {
-		return this.map.keySet();
-	}
-
-	/**
-	 * 返回JSON对象顶级Value的集合
-	 * @return
-	 */
-	public Collection<Object> values() {
-		return this.map.values();
-	}
-
-	/**
-	 * JSON对象长度
-	 * 
-	 * @return
-	 */
-	public int size() {
-		return this.map.size();
-	}
-
-	/**
-	 * 判断key是否存在
-	 * 
-	 * @param key
-	 * @return
-	 */
-	public boolean containsKey(String key) {
-		return this.map.containsKey(key);
-	}
-
-	/**
 	 * 获取JSON对象的第一个元素
 	 * @param key
 	 * @return
@@ -161,16 +115,6 @@ public class JSONObject {
 	public Entry<String, Object> getFirst() {
 		if (size() == 0) return null;
 		return this.map.entrySet().iterator().next();
-	}
-
-	/**
-	 * 返回指定key的value
-	 * 
-	 * @param key
-	 * @return
-	 */
-	public Object get(String key) {
-		return this.map.get(key);
 	}
 
 	public String getString(String key) {
@@ -278,17 +222,6 @@ public class JSONObject {
 	public JSONArray getArray(Enum<?> e) {
 		return getArray(e.toString().toLowerCase());
 	}
-
-	/**
-	 * 添加key-value对
-	 * 
-	 * @param key
-	 * @param value
-	 */
-	public JSONObject put(String key, Object value) {
-		this.map.put(key, value);
-		return this;
-	}
 	
 	/**
 	 * 添加枚举类型key的key-value对
@@ -299,16 +232,6 @@ public class JSONObject {
 	public JSONObject put(Enum<?> e, Object value) {
 		this.map.put(e.toString().toLowerCase(), value);
 		return this;
-	}
-
-	/**
-	 * 删除指定key元素
-	 * 
-	 * @param key
-	 * @return
-	 */
-	public Object remove(String key) {
-		return this.map.remove(key);
 	}
 	
 	/**
@@ -476,6 +399,67 @@ public class JSONObject {
 			e.printStackTrace();
 		}
 		return t;
+	}
+
+	@Override
+	public int size() {
+		return map.size();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return map.isEmpty();
+	}
+
+	@Override
+	public boolean containsKey(Object key) {
+		return map.containsKey(key);
+	}
+
+	@Override
+	public boolean containsValue(Object value) {
+		return map.containsValue(value);
+	}
+
+	@Override
+	public Object get(Object key) {
+		return map.get(key);
+	}
+
+	@Override
+	public JSONObject put(String key, Object value) {
+		map.put(key, value);
+		return this;
+	}
+
+	@Override
+	public Object remove(Object key) {
+		return map.remove(key);
+	}
+
+	@Override
+	public void putAll(Map<? extends String, ? extends Object> m) {
+		map.putAll(m);
+	}
+
+	@Override
+	public void clear() {
+		map.clear();
+	}
+
+	@Override
+	public Set<String> keySet() {
+		return map.keySet();
+	}
+
+	@Override
+	public Collection<Object> values() {
+		return map.values();
+	}
+
+	@Override
+	public Set<Entry<String, Object>> entrySet() {
+		return map.entrySet();
 	}
 
 }

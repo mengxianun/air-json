@@ -204,7 +204,16 @@ public class JSON {
 	}
 
 	public static boolean isEmpty(JSONArray json) {
-		return json == null || json.length() == 0;
+		return json == null || json.size() == 0;
+	}
+
+	public Object primitive() {
+		if (this instanceof JSONObject) {
+			return ((JSONObject) this).toMap();
+		} else if (this instanceof JSONArray) {
+			return ((JSONArray) this).toList();
+		}
+		return null;
 	}
 
 }

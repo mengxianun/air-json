@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
+import java.util.Map;
 
 /**
  * json数组包装器, 内部用一个list集合存储
@@ -12,7 +14,7 @@ import java.util.List;
  * @author mengxiangyun
  *
  */
-public class JSONArray {
+public class JSONArray extends JSON implements List<Object> {
 
 	private final List<Object> list;
 
@@ -65,68 +67,6 @@ public class JSONArray {
 	}
 
 	/**
-	 * 返回元素的迭代器
-	 * 
-	 * @return
-	 */
-	public Iterator<Object> iterator() {
-		return this.list.iterator();
-	}
-
-	/**
-	 * 返回指定位置的元素
-	 * 
-	 * @param index
-	 * @return
-	 */
-	public Object get(int index) {
-		return this.list.get(index);
-	}
-
-	/**
-	 * 添加对象
-	 * 
-	 * @param value
-	 * @return
-	 */
-	public JSONArray add(Object value) {
-		this.list.add(value);
-		return this;
-	}
-
-	/**
-	 * 添加对象
-	 * 
-	 * @param value
-	 * @return
-	 */
-	public JSONArray addAll(Collection<?> c) {
-		this.list.addAll(c);
-		return this;
-	}
-
-	public boolean contains(Object o) {
-		return this.list.contains(o);
-	}
-
-	public Object remove(int index) {
-		return this.list.remove(index);
-	}
-
-	public boolean remove(Object o) {
-		return this.list.remove(o);
-	}
-
-	/**
-	 * JSON数组长度
-	 * 
-	 * @return
-	 */
-	public int length() {
-		return this.list.size();
-	}
-
-	/**
 	 * 输出json字符串, 格式紧凑, 只有一行
 	 */
 	@Override
@@ -163,11 +103,30 @@ public class JSONArray {
 		List<Object> result = new ArrayList<>();
 		for (Object object : list) {
 			if (object instanceof JSONObject) {
-				object = ((JSONObject) object).toMap();
+				result.add(((JSONObject) object).toMap());
 			} else if (object instanceof JSONArray) {
-				object = ((JSONArray) object).toList();
+				result.add(((JSONArray) object).toList());
+			} else {
+				result.add(object);
 			}
-			result.add(object);
+		}
+		return result;
+	}
+
+	/**
+	 * 将JSONArray转换为Map List对象
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public List<Map<String, Object>> toMapList() {
+		List<Map<String, Object>> result = new ArrayList<>();
+		for (Object object : list) {
+			if (object instanceof JSONObject) {
+				result.add(((JSONObject) object).toMap());
+			} else if (object instanceof Map) {
+				result.add((Map<String, Object>) object);
+			}
 		}
 		return result;
 	}
@@ -196,14 +155,124 @@ public class JSONArray {
 	 * @return
 	 */
 	public String[] toStringArray() {
-		if (length() == 0) {
+		if (size() == 0) {
 			return new String[0];
 		}
-		String[] result = new String[length()];
-		for (int i = 0; i < length(); i++) {
+		String[] result = new String[size()];
+		for (int i = 0; i < size(); i++) {
 			result[i] = list.get(i).toString();
 		}
 		return result;
+	}
+
+	@Override
+	public int size() {
+		return list.size();
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return list.isEmpty();
+	}
+
+	@Override
+	public boolean contains(Object o) {
+		return list.contains(o);
+	}
+
+	@Override
+	public Iterator<Object> iterator() {
+		return list.iterator();
+	}
+
+	@Override
+	public <T> T[] toArray(T[] a) {
+		return null;
+	}
+
+	@Override
+	public boolean add(Object e) {
+		return list.add(e);
+	}
+
+	@Override
+	public boolean remove(Object o) {
+		return list.remove(o);
+	}
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		return list.containsAll(c);
+	}
+
+	@Override
+	public boolean addAll(Collection<? extends Object> c) {
+		return list.addAll(c);
+	}
+
+	@Override
+	public boolean addAll(int index, Collection<? extends Object> c) {
+		return list.addAll(index, c);
+	}
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		return list.removeAll(c);
+	}
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		return list.retainAll(c);
+	}
+
+	@Override
+	public void clear() {
+		list.clear();
+	}
+
+	@Override
+	public Object get(int index) {
+		return list.get(index);
+	}
+
+	@Override
+	public Object set(int index, Object element) {
+		return list.set(index, element);
+	}
+
+	@Override
+	public void add(int index, Object element) {
+		list.add(index, element);
+	}
+
+	@Override
+	public Object remove(int index) {
+		return list.remove(index);
+	}
+
+	@Override
+	public int indexOf(Object o) {
+		return list.indexOf(o);
+	}
+
+	@Override
+	public int lastIndexOf(Object o) {
+		return list.lastIndexOf(o);
+	}
+
+	@Override
+	public ListIterator<Object> listIterator() {
+		return list.listIterator();
+	}
+
+	@Override
+	public ListIterator<Object> listIterator(int index) {
+		return list.listIterator(index);
+	}
+
+	@Override
+	public List<Object> subList(int fromIndex, int toIndex) {
+		return list.subList(fromIndex, toIndex);
 	}
 
 }
